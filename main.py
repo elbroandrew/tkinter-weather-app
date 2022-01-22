@@ -5,7 +5,7 @@ app = Tk()
 app.title("Weather app")
 app.geometry('700x350')
 
-city_text = StringVar()
+city_text = StringVar() # object to set/get string
 city_entry = Entry(app, textvariable=city_text)
 city_entry.pack()
 
