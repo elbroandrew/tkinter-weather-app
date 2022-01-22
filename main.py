@@ -40,7 +40,7 @@ def search():
     if weather:
         pass
     else:
-        messagebox.showerror("Не могу найти город".format(city))
+        messagebox.showerror('Ошибка', "Не могу найти город".format(city))
 
 
 
