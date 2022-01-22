@@ -3,7 +3,6 @@ from tkinter import messagebox
 from configparser import ConfigParser
 import requests
 
-
 url = "http://api.openweathermap.org/data/2.5/weather?q={}&lang=ru&appid={}"
 
 config_file = 'config.ini'
@@ -42,7 +41,7 @@ app.geometry('350x400')
 def search():
     city = city_text.get()
     weather = get_weather(city)
-    print(weather)
+    print(weather['weather'])
     if weather:
         location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
         temp_lbl['text'] = '{:.1f} C'.format(weather['temp'])
@@ -51,16 +50,30 @@ def search():
         messagebox.showerror('Ошибка', "Не могу найти город".format(city))
 
 
+# info label
+info_text = Text(app,
+                 height=2,
+                 width=40,
+                 bg="light cyan",
+                 wrap=WORD)
+info_text.tag_configure("center", justify='center')
+info_text.insert(1.0, "Введите название города и даже страны, пример: \"Рим, IT\" или просто \"Москва\".")
+info_text.tag_add("center", 1.0, "end")
+info_text.config(state='disabled')
+info_text.pack()
 
 # entry field
 city_text = StringVar()  # object to set/get string
-city_entry = Entry(app, textvariable=city_text).pack()
+city_entry = Entry(app, textvariable=city_text)
+city_entry.pack()
 
 # search button
-search_btn: Button = Button(app, text='Поиск', width=12, command=search).pack()
+search_btn: Button = Button(app, text='Поиск', width=12, command=search)
+search_btn.pack()
 
 # label
-location_lbl = Label(app, text='Город', font=('consolas', 32)).pack()
+location_lbl = Label(app, text='Город', font=('consolas', 32))
+location_lbl.pack()
 
 # image
 # URL = "http://openweathermap.org/img/wn/10d@2x.png"
@@ -69,12 +82,15 @@ location_lbl = Label(app, text='Город', font=('consolas', 32)).pack()
 #     with open("sample.png", 'wb') as f:
 #         f.write(response.content)
 
-image = Label(app, bitmap='').pack()
+image = Label(app, bitmap='')
+image.pack()
 # image['bitmap'] = ""
 
-temp_lbl = Label(app, text="").pack()
+temp_lbl = Label(app, text="")
+temp_lbl.pack()
 
-weather_lbl = Label(app, text="").pack()
+weather_lbl = Label(app, text="")
+weather_lbl.pack()
 
 if __name__ == '__main__':
     app.mainloop()
