@@ -13,12 +13,20 @@ api_key = config['api_key']['key']
 def get_weather(city: str):
     result = requests.get(url.format(city, api_key))
     if result:
-        print(result.content)
+        json = result.json()
+        city = json['name']
+        country = json['sys']['country']
+        temp_kelvin = json['main']['temp']
+        temp_celsius = temp_kelvin - 273.15
+        icon = json['weather'][0]['icon']
+        weather = json['weather'][0]['main']
+        final = (city, country, temp_celsius, icon, weather)
+        return final
     else:
         return None
 
 
-get_weather("London")
+print(get_weather("London"))
 
 app = Tk()
 app.title("Weather app")
