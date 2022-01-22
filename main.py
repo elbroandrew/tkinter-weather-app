@@ -1,5 +1,6 @@
 from tkinter import *
-from Api_key import API_KEY
+
+url = 'api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}'
 
 app = Tk()
 app.title("Weather app")
@@ -26,11 +27,11 @@ location_lbl.pack()
 image = Label(app, bitmap='')
 image.pack()
 
-temp_lbl = Label(app, text="temperature")
+temp_lbl = Label(app, text="")
 temp_lbl.pack()
 
 
-weather_lbl = Label(app, text="weather")
+weather_lbl = Label(app, text="")
 weather_lbl.pack()
 
 
