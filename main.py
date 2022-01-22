@@ -1,7 +1,13 @@
 from tkinter import *
 from configparser import ConfigParser
 
-url = 'api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}'
+url = 'api.openweathermap.org/data/2.5/weather?q={ }&appid={ }'
+
+config_file = 'config.ini'
+config = ConfigParser()
+config.read(config_file)
+api_key = config['api_key']['key']
+
 
 app = Tk()
 app.title("Weather app")
