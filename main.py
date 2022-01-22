@@ -26,6 +26,14 @@ location_lbl.pack()
 image = Label(app, bitmap='')
 image.pack()
 
+temp_lbl = Label(app, text="temperature")
+temp_lbl.pack()
+
+
+weather_lbl = Label(app, text="weather")
+weather_lbl.pack()
+
+
 
 
 if __name__ == '__main__':
