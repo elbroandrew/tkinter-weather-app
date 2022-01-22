@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from configparser import ConfigParser
 import requests
 
@@ -34,7 +35,13 @@ app.geometry('700x350')
 
 
 def search():
-    pass
+    city = city_text.get()
+    weather = get_weather(city)
+    if weather:
+        pass
+    else:
+        messagebox.showerror("Не могу найти город".format(city))
+
 
 
 # entry field
