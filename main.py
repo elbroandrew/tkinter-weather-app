@@ -52,4 +52,5 @@ temp_lbl.pack()
 weather_lbl = Label(app, text="")
 weather_lbl.pack()
 
-app.mainloop()
+if __name__ == '__main__':
+    app.mainloop()
