@@ -3,7 +3,8 @@ from tkinter import messagebox
 from configparser import ConfigParser
 import requests
 
-url = "http://api.openweathermap.org/data/2.5/weather?q={}&appid={}"
+
+url = "http://api.openweathermap.org/data/2.5/weather?q={}&lang=ru&appid={}"
 
 config_file = 'config.ini'
 config = ConfigParser()
@@ -18,27 +19,34 @@ def get_weather(city: str):
         city = json['name']
         country = json['sys']['country']
         temp_kelvin = json['main']['temp']
-        temp_celsius = temp_kelvin - 273.15
+        temp = temp_kelvin - 273.15
         icon = json['weather'][0]['icon']
-        weather = json['weather'][0]['main']
-        final = (city, country, temp_celsius, icon, weather)
+        weather = json['weather'][0]['description']
+        final = dict(
+            city=city,
+            country=country,
+            temp=temp,
+            icon=icon,
+            weather=weather
+        )
         return final
     else:
         return None
 
 
-print(get_weather("London"))
-
 app = Tk()
-app.title("Weather app")
-app.geometry('700x350')
+app.title("Погода")
+app.geometry('350x400')
 
 
 def search():
     city = city_text.get()
     weather = get_weather(city)
+    print(weather)
     if weather:
-        pass
+        location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
+        temp_lbl['text'] = '{:.1f} C'.format(weather['temp'])
+        weather_lbl['text'] = weather['weather']
     else:
         messagebox.showerror('Ошибка', "Не могу найти город".format(city))
 
@@ -46,26 +54,27 @@ def search():
 
 # entry field
 city_text = StringVar()  # object to set/get string
-city_entry = Entry(app, textvariable=city_text)
-city_entry.pack()
+city_entry = Entry(app, textvariable=city_text).pack()
 
 # search button
-search_btn: Button = Button(app, text='Search weather', width=12, command=search)
-search_btn.pack()
+search_btn: Button = Button(app, text='Поиск', width=12, command=search).pack()
 
 # label
-location_lbl = Label(app, text='Location', font=('consolas', 20))
-location_lbl.pack()
+location_lbl = Label(app, text='Город', font=('consolas', 32)).pack()
 
 # image
-image = Label(app, bitmap='')
-image.pack()
+# URL = "http://openweathermap.org/img/wn/10d@2x.png"
+# response = requests.get(URL)
+# if response.status_code == 200:
+#     with open("sample.png", 'wb') as f:
+#         f.write(response.content)
 
-temp_lbl = Label(app, text="")
-temp_lbl.pack()
+image = Label(app, bitmap='').pack()
+# image['bitmap'] = ""
 
-weather_lbl = Label(app, text="")
-weather_lbl.pack()
+temp_lbl = Label(app, text="").pack()
+
+weather_lbl = Label(app, text="").pack()
 
 if __name__ == '__main__':
     app.mainloop()
