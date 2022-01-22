@@ -1,4 +1,5 @@
 from tkinter import *
+from configparser import ConfigParser
 
 url = 'api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}'
 
