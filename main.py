@@ -1,13 +1,20 @@
 from tkinter import *
 from configparser import ConfigParser
+import requests
 
-url = 'api.openweathermap.org/data/2.5/weather?q={ }&appid={ }'
+url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid={}'
 
 config_file = 'config.ini'
 config = ConfigParser()
 config.read(config_file)
 api_key = config['api_key']['key']
 
+def get_weather(city: str):
+    result = requests.get(url.format(city, api_key))
+    if result:
+        print(result.content)
+    else:
+        return None
 
 app = Tk()
 app.title("Weather app")
