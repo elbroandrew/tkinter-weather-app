@@ -20,13 +20,13 @@ def get_weather(city: str):
         country = json['sys']['country']
         temp_kelvin = json['main']['temp']
         temp = temp_kelvin - 273.15
-        icon = json['weather'][0]['icon']
+        icon_img = json['weather'][0]['icon']
         weather = json['weather'][0]['description']
         final = dict(
             city=city,
             country=country,
             temp=temp,
-            icon=icon,
+            icon=icon_img,
             weather=weather
         )
         return final
