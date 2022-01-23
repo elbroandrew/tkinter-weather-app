@@ -10,6 +10,7 @@ config = ConfigParser()
 config.read(config_file)
 api_key = config['api_key']['key']
 
+img = None
 
 def get_weather(city: str):
     result = requests.get(url.format(city, api_key))
@@ -37,7 +38,6 @@ app = Tk()
 app.title("Погода")
 app.geometry('350x400')
 
-img = None
 
 
 def search():
