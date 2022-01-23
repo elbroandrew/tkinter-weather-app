@@ -39,7 +39,6 @@ app.title("Погода")
 app.geometry('350x400')
 
 
-
 def search():
     city = city_text.get()
     weather = get_weather(city)
