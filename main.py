@@ -37,14 +37,18 @@ app = Tk()
 app.title("Погода")
 app.geometry('350x400')
 
+img = None
+
 
 def search():
     city = city_text.get()
     weather = get_weather(city)
-    print(weather['weather'])
     if weather:
+        global img
+        img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
         location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
-        temp_lbl['text'] = '{:.1f} C'.format(weather['temp'])
+        temp_lbl['text'] = '{:.1f}°C'.format(weather['temp'])
+        icon['image'] = img
         weather_lbl['text'] = weather['weather']
     else:
         messagebox.showerror('Ошибка', "Не могу найти город".format(city))
@@ -75,16 +79,8 @@ search_btn.pack()
 location_lbl = Label(app, text='Город', font=('consolas', 32))
 location_lbl.pack()
 
-# image
-# URL = "http://openweathermap.org/img/wn/10d@2x.png"
-# response = requests.get(URL)
-# if response.status_code == 200:
-#     with open("sample.png", 'wb') as f:
-#         f.write(response.content)
-
-image = Label(app, bitmap='')
-image.pack()
-# image['bitmap'] = ""
+icon = Label(app, image="")
+icon.pack()
 
 temp_lbl = Label(app, text="")
 temp_lbl.pack()
