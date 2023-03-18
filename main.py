@@ -52,8 +52,14 @@ def search():
         temp_lbl['text'] = '+{:.1f}°C'.format(weather['temp']) if weather['temp'] > 0 else '{:.1f}°C'.format(weather['temp'])
         icon['image'] = img
         weather_lbl['text'] = weather['weather']
+        clear_city_text_field()
     else:
         messagebox.showerror('Ошибка', "Не могу найти город".format(city))
+        clear_city_text_field()
+
+
+def clear_city_text_field():
+    city_entry.delete(0, END)
 
 
 # info label
