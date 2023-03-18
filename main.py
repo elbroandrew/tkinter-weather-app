@@ -38,6 +38,7 @@ def get_weather(city: str) -> dict or None:
 app = Tk()
 app.title("Погода")
 app.geometry('350x400')
+app.resizable(False, False)
 app.configure(bg="#e3dcde")
 
 
@@ -48,7 +49,7 @@ def search():
         global img
         img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
         location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
-        temp_lbl['text'] = '{:.1f}°C'.format(weather['temp'])
+        temp_lbl['text'] = '+{:.1f}°C'.format(weather['temp']) if weather['temp'] > 0 else '{:.1f}°C'.format(weather['temp'])
         icon['image'] = img
         weather_lbl['text'] = weather['weather']
     else:
@@ -85,7 +86,7 @@ icon = Label(app, image="")
 icon.configure(bg="#e3dcde")
 icon.pack()
 
-temp_lbl = Label(app, text="")
+temp_lbl = Label(app, text="", font=('arial', 22))
 temp_lbl.configure(bg="#e3dcde")
 temp_lbl.pack()
 
@@ -95,3 +96,11 @@ weather_lbl.pack()
 
 if __name__ == '__main__':
     app.mainloop()
+
+#TODO:
+"""
+* word wrap for City and Country label
+* current date
+* day/night label
+* search on ENTER key hit
+"""
