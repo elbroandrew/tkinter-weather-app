@@ -12,7 +12,8 @@ api_key = config['api_key']['key']
 
 img = None
 
-def get_weather(city: str):
+
+def get_weather(city: str) -> dict or None:
     result = requests.get(url.format(city, api_key))
     if result:
         json = result.json()
@@ -22,14 +23,14 @@ def get_weather(city: str):
         temp = temp_kelvin - 273.15
         icon_img = json['weather'][0]['icon']
         weather = json['weather'][0]['description']
-        final = dict(
+        res = dict(
             city=city,
             country=country,
             temp=temp,
             icon=icon_img,
             weather=weather
         )
-        return final
+        return res
     else:
         return None
 
@@ -37,6 +38,7 @@ def get_weather(city: str):
 app = Tk()
 app.title("Погода")
 app.geometry('350x400')
+app.configure(bg="#e3dcde")
 
 
 def search():
@@ -76,15 +78,19 @@ search_btn.pack()
 
 # label
 location_lbl = Label(app, text='Город', font=('consolas', 32))
+location_lbl.configure(bg="#e3dcde")
 location_lbl.pack()
 
 icon = Label(app, image="")
+icon.configure(bg="#e3dcde")
 icon.pack()
 
 temp_lbl = Label(app, text="")
+temp_lbl.configure(bg="#e3dcde")
 temp_lbl.pack()
 
 weather_lbl = Label(app, text="")
+weather_lbl.configure(bg="#e3dcde")
 weather_lbl.pack()
 
 if __name__ == '__main__':
