@@ -70,8 +70,8 @@ info_text.pack()
 
 # entry field
 city_text = StringVar()  # object to set/get string
-city_entry = Entry(app, textvariable=city_text)
-city_entry.pack(pady=(10, 10))
+city_entry = Entry(app, textvariable=city_text, width=30, font=("arial", 12), justify="center")
+city_entry.pack(pady=(10, 10), ipady=5)
 
 # search button
 search_btn: Button = Button(app, text='Поиск', width=12, command=search)
@@ -104,4 +104,5 @@ if __name__ == '__main__':
 * day/night label
 * search on ENTER key hit
 * get rid of GLOBAL inside search func ( -> создать класс, и в нем статик переменную img?)
+* clear entry field after error message and search result
 """
