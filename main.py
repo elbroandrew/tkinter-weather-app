@@ -71,14 +71,14 @@ info_text.pack()
 # entry field
 city_text = StringVar()  # object to set/get string
 city_entry = Entry(app, textvariable=city_text)
-city_entry.pack()
+city_entry.pack(pady=(10, 10))
 
 # search button
 search_btn: Button = Button(app, text='Поиск', width=12, command=search)
-search_btn.pack()
+search_btn.pack(pady=(10, 10))
 
 # label
-location_lbl = Label(app, text='Город', font=('consolas', 32))
+location_lbl = Label(app, text='Город', font=('consolas', 32), relief = "groove")
 location_lbl.configure(bg="#e3dcde")
 location_lbl.pack()
 
@@ -103,4 +103,5 @@ if __name__ == '__main__':
 * current date
 * day/night label
 * search on ENTER key hit
+* get rid of GLOBAL inside search func ( -> создать класс, и в нем статик переменную img?)
 """
