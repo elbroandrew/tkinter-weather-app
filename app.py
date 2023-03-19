@@ -1,15 +1,16 @@
-import traceback
 from tkinter import *
 from tkinter import messagebox
 import requests
 
 
 class App(Tk):
+    _bg_color = "#e3dcde"
 
     def __init__(self, url: str, api_key: str):
         super().__init__()
         self.url = url
         self.api_key = api_key
+        self.widgets = []
 
     def get_weather_response(self, city: str) -> requests.Response:
         try:
@@ -34,3 +35,27 @@ class App(Tk):
             icon=json['weather'][0]['icon'],
             weather=json['weather'][0]['description']
         )
+
+    def create_info_text(self):
+        info_text = Text(self,
+                         height=2,
+                         width=40,
+                         bg="light cyan",
+                         wrap=WORD)
+        info_text.tag_configure("center", justify='center')
+        info_text.insert(1.0, "Введите название города и даже страны, пример: \"Рим, IT\" или просто \"Москва\".")
+        info_text.tag_add("center", 1.0, "end")
+        info_text.config(state='disabled')
+
+        return info_text
+
+
+
+    def pack_all_widgets(self):
+        """
+        Create all widgets here and draw them
+        """
+        self.widgets.append(self.create_info_text())
+
+        for w in self.widgets:
+            w.pack()

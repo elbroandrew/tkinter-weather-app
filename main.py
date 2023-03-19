@@ -12,6 +12,8 @@ api_key = config['api_key']['key']
 
 img = None
 
+_color = "#e3dcde"
+
 
 def get_weather(city: str) -> dict or None:
     result = requests.get(url.format(city, api_key))
@@ -39,7 +41,7 @@ app = Tk()
 app.title("Погода")
 app.geometry('350x400')
 app.resizable(False, False)
-app.configure(bg="#e3dcde")
+app.configure(bg=_color)
 
 
 def search():
@@ -83,20 +85,16 @@ search_btn: Button = Button(app, text='Поиск', width=12, command=search)
 search_btn.pack(pady=(10, 10))
 
 # label
-location_lbl = Label(app, text='Город', font=('consolas', 32), relief = "groove")
-location_lbl.configure(bg="#e3dcde")
+location_lbl = Label(app, text='Город', font=('consolas', 32), relief="groove", bg=_color)
 location_lbl.pack()
 
-icon = Label(app, image="")
-icon.configure(bg="#e3dcde")
+icon = Label(app, bg=_color)
 icon.pack()
 
-temp_lbl = Label(app, text="", font=('arial', 22))
-temp_lbl.configure(bg="#e3dcde")
+temp_lbl = Label(app, text="", font=('arial', 22), bg=_color)
 temp_lbl.pack()
 
-weather_lbl = Label(app, text="")
-weather_lbl.configure(bg="#e3dcde")
+weather_lbl = Label(app, text="", bg=_color)
 weather_lbl.pack()
 
 if __name__ == '__main__':
@@ -109,4 +107,7 @@ if __name__ == '__main__':
 * day/night label
 * search on ENTER key hit
 * get rid of GLOBAL inside search func ( -> создать класс, и в нем статик переменную img?)
+* sqlite or csv to store previous cities?
+* load default city from DB?
+* threading ?
 """
