@@ -15,14 +15,14 @@ class App(Tk):
         self.city_text = StringVar()
         self.img = None
         self.button_text = "Поиск"
-        self.location_lbl = Label(self, text='Город', font=('consolas', 32), relief="groove", bg=self._color)
         self.temp_lbl = Label(self, text="", font=('arial', 22), bg=self._color)
         self.icon = Label(self, bg=self._color)
         self.weather_lbl = Label(self, text="", font=('calibri', 18), bg=self._color)
         self.search_button = Button(self, text=self.button_text, width=12, command=self.search)
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
+        self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center", relief="groove", bg=self._color)
         self.title("Погода")
-        self.geometry('350x500')
+        self.geometry('450x500')
         self.resizable(False, False)
         self.configure(bg=self._color)
         self.kelvin = 273.15
@@ -58,7 +58,7 @@ class App(Tk):
     def create_info_text(self) -> Text:
         info_text = Text(self,
                          height=2,
-                         width=40,
+                         width=50,
                          bg="light cyan",
                          wrap=WORD)
         info_text.tag_configure("center", justify='center')

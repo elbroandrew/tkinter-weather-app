@@ -104,7 +104,6 @@ if __name__ == '__main__':
 """
 * word wrap for City and Country label
 * "RU" fo Russia etc.
-* current date
 * day/night label
 * search on ENTER key hit
 * sqlite or csv to store previous cities?
