@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 import requests
+from time import strftime
+from datetime import date
 
 
 class App(Tk):
@@ -24,6 +26,10 @@ class App(Tk):
         self.geometry('350x400')
         self.resizable(False, False)
         self.configure(bg=self._color)
+        self.kelvin = 273.15
+        self.curr_date = None
+        self.string_clock = None
+        self.clock_label = Label(self, font=('calibri', 14, 'bold'), bg=self._color, foreground='blue')
 
     def get_weather_response(self, city: str) -> requests.Response:
         try:
@@ -45,7 +51,7 @@ class App(Tk):
             return dict(
                 city=json['name'],
                 country=json['sys']['country'],
-                temp=json['main']['temp'] - 273.15,
+                temp=json['main']['temp'] - self.kelvin,
                 icon=json['weather'][0]['icon'],
                 weather=json['weather'][0]['description']
             )
@@ -71,6 +77,7 @@ class App(Tk):
         self.city_entry.pack(pady=self.pady, ipady=5)
         self.search_button.pack(pady=self.pady)
         self.location_lbl.pack()
+        self.clock_label.pack()
         self.icon.pack()
         self.temp_lbl.pack()
         self.weather_lbl.pack()
@@ -91,3 +98,8 @@ class App(Tk):
 
     def clear_city_text_field(self):
         self.city_entry.delete(0, END)
+
+    def ttime(self):
+        self.string_clock = strftime('%H:%M:%S %p')
+        self.clock_label.config(text=self.string_clock)
+        self.clock_label.after(1000, self.ttime)

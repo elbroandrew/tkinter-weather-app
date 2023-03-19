@@ -103,10 +103,10 @@ if __name__ == '__main__':
 #TODO:
 """
 * word wrap for City and Country label
+* "RU" fo Russia etc.
 * current date
 * day/night label
 * search on ENTER key hit
-* get rid of GLOBAL inside search func ( -> создать класс, и в нем статик переменную img?)
 * sqlite or csv to store previous cities?
 * load default city from DB?
 * threading ?
