@@ -20,6 +20,10 @@ class App(Tk):
         self.weather_lbl = Label(self, text="", bg=self._color)
         self.search_button = Button(self, text=self.button_text, width=12, command=self.search)
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("arial", 12), justify="center")
+        self.title("Погода")
+        self.geometry('350x400')
+        self.resizable(False, False)
+        self.configure(bg=self._color)
 
     def get_weather_response(self, city: str) -> requests.Response:
         try:
