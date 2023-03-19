@@ -4,13 +4,22 @@ import requests
 
 
 class App(Tk):
-    _bg_color = "#e3dcde"
 
     def __init__(self, url: str, api_key: str):
         super().__init__()
+        self._color = "#e3dcde"
         self.url = url
         self.api_key = api_key
-        self.widgets = []
+        self.pady = (10, 10)
+        self.city_text = StringVar()
+        self.img = None
+        self.button_text = "Поиск"
+        self.location_lbl = Label(self, text='Город', font=('consolas', 32), relief="groove", bg=self._color)
+        self.temp_lbl = Label(self, text="", font=('arial', 22), bg=self._color)
+        self.icon = Label(self, bg=self._color)
+        self.weather_lbl = Label(self, text="", bg=self._color)
+        self.search_button = Button(self, text=self.button_text, width=12, command=self.search)
+        self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("arial", 12), justify="center")
 
     def get_weather_response(self, city: str) -> requests.Response:
         try:
@@ -26,17 +35,18 @@ class App(Tk):
 
     def get_weather_dict_from_response(self, result) -> dict:
 
-        json = result.json()
+        if result:
+            json = result.json()
 
-        return dict(
-            city=json['name'],
-            country=json['sys']['country'],
-            temp=json['main']['temp'] - 273.15,
-            icon=json['weather'][0]['icon'],
-            weather=json['weather'][0]['description']
-        )
+            return dict(
+                city=json['name'],
+                country=json['sys']['country'],
+                temp=json['main']['temp'] - 273.15,
+                icon=json['weather'][0]['icon'],
+                weather=json['weather'][0]['description']
+            )
 
-    def create_info_text(self):
+    def create_info_text(self) -> Text:
         info_text = Text(self,
                          height=2,
                          width=40,
@@ -49,13 +59,31 @@ class App(Tk):
 
         return info_text
 
-
-
     def pack_all_widgets(self):
         """
         Create all widgets here and draw them
         """
-        self.widgets.append(self.create_info_text())
+        self.create_info_text().pack()
+        self.city_entry.pack(pady=self.pady, ipady=5)
+        self.search_button.pack(pady=self.pady)
+        self.location_lbl.pack()
+        self.icon.pack()
+        self.temp_lbl.pack()
+        self.weather_lbl.pack()
 
-        for w in self.widgets:
-            w.pack()
+    def search(self):
+        city: str = self.city_text.get()
+        res = self.get_weather_response(city)
+        weather = self.get_weather_dict_from_response(res)
+        if weather:
+            self.img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
+            self.location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
+            self.temp_lbl['text'] = '+{:.1f}°C'.format(weather['temp']) if weather['temp'] > 0 else '{:.1f}°C'.format(
+                weather['temp'])
+            self.icon['image'] = self.img
+            self.weather_lbl['text'] = weather['weather']
+
+        self.clear_city_text_field()
+
+    def clear_city_text_field(self):
+        self.city_entry.delete(0, END)
