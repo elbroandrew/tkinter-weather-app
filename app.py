@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 import requests
 from time import strftime
-from datetime import date
 
 
 class App(Tk):
@@ -19,15 +18,15 @@ class App(Tk):
         self.location_lbl = Label(self, text='Город', font=('consolas', 32), relief="groove", bg=self._color)
         self.temp_lbl = Label(self, text="", font=('arial', 22), bg=self._color)
         self.icon = Label(self, bg=self._color)
-        self.weather_lbl = Label(self, text="", bg=self._color)
+        self.weather_lbl = Label(self, text="", font=('calibri', 18), bg=self._color)
         self.search_button = Button(self, text=self.button_text, width=12, command=self.search)
-        self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("arial", 12), justify="center")
+        self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
         self.title("Погода")
-        self.geometry('350x400')
+        self.geometry('350x500')
         self.resizable(False, False)
         self.configure(bg=self._color)
         self.kelvin = 273.15
-        self.curr_date = None
+        self.curr_date = strftime("%d-%b-%Y")
         self.string_clock = None
         self.clock_label = Label(self, font=('calibri', 14, 'bold'), bg=self._color, foreground='blue')
 
@@ -100,6 +99,6 @@ class App(Tk):
         self.city_entry.delete(0, END)
 
     def ttime(self):
-        self.string_clock = strftime('%H:%M:%S %p')
-        self.clock_label.config(text=self.string_clock)
+        self.string_clock = strftime('%H:%M:%S')
+        self.clock_label.config(text="{}, {}".format(self.curr_date, self.string_clock))
         self.clock_label.after(1000, self.ttime)

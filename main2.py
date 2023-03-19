@@ -1,5 +1,7 @@
 from app import App
 from configparser import ConfigParser
+import locale
+locale.setlocale(locale.LC_ALL, "ru")
 
 config_file = 'config.ini'
 config = ConfigParser()
