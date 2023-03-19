@@ -53,7 +53,7 @@ def search():
         icon['image'] = img
         weather_lbl['text'] = weather['weather']
     else:
-        messagebox.showerror('Ошибка', "Не могу найти город".format(city))
+        messagebox.showerror('Ошибка', "Не могу найти город '{}'".format(city.capitalize()))
     clear_city_text_field()
 
 
