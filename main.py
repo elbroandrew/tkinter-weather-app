@@ -52,10 +52,9 @@ def search():
         temp_lbl['text'] = '+{:.1f}°C'.format(weather['temp']) if weather['temp'] > 0 else '{:.1f}°C'.format(weather['temp'])
         icon['image'] = img
         weather_lbl['text'] = weather['weather']
-        clear_city_text_field()
     else:
         messagebox.showerror('Ошибка', "Не могу найти город".format(city))
-        clear_city_text_field()
+    clear_city_text_field()
 
 
 def clear_city_text_field():
@@ -110,5 +109,4 @@ if __name__ == '__main__':
 * day/night label
 * search on ENTER key hit
 * get rid of GLOBAL inside search func ( -> создать класс, и в нем статик переменную img?)
-* clear entry field after error message and search result
 """
