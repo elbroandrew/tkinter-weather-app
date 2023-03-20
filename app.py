@@ -26,8 +26,7 @@ class App(Tk):
                                     command=lambda: self.search(self.city_entry.get()))
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
         self.day_night_label = Label(self, bg=self._color, fg="steel blue", font=('calibri', 18))
-        self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center",
-                                    relief="groove", bg=self._color)
+        self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center", bg=self._color)
         self.title("Погода")
         self.geometry('450x560')
         self.resizable(False, False)
