@@ -4,6 +4,7 @@ import requests
 from time import strftime
 import logging
 from countries_rus import countries
+from day_night_time import DayNight
 
 
 class App(Tk):
@@ -23,6 +24,7 @@ class App(Tk):
         self.weather_lbl = Label(self, text="", font=('calibri', 18), bg=self._color)
         self.search_button = Button(self, text=self.button_text, width=12, command=self.search)
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
+        self.day_night_label = Label(self, bg=self._color, fg="steel blue", font=('calibri', 18))
         self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center",
                                     relief="groove", bg=self._color)
         self.title("Погода")
@@ -87,6 +89,7 @@ class App(Tk):
         self.search_button.pack(pady=self.pady)
         self.location_lbl.pack()
         self.clock_label.pack()
+        self.day_night_label.pack()
         self.icon.pack()
         self.temp_lbl.pack()
         self.weather_lbl.pack()
@@ -100,7 +103,9 @@ class App(Tk):
             self.location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
             self.temp_lbl['text'] = '+{:.1f}°C'.format(weather['temp']) if weather['temp'] > 0 else '{:.1f}°C'.format(
                 weather['temp'])
+            self.temp_lbl.configure(relief="groove", pady=5, padx=5)
             self.icon['image'] = self.img
+            self.day_night_label.configure(text=DayNight(weather['icon']).image)
             self.weather_lbl['text'] = weather['weather']
 
         self.clear_city_text_field()
