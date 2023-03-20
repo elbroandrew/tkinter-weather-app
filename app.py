@@ -27,7 +27,7 @@ class App(Tk):
         self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center",
                                     relief="groove", bg=self._color)
         self.title("Погода")
-        self.geometry('450x500')
+        self.geometry('450x560')
         self.resizable(False, False)
         self.configure(bg=self._color)
         self.kelvin = 273.15
