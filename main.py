@@ -103,5 +103,4 @@ if __name__ == '__main__':
 #TODO:
 """
 * sqlite or csv to store previous cities?
-* load default city from DB?
 """

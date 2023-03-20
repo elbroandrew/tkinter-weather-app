@@ -99,6 +99,16 @@ class App(Tk):
     def get_city(self):
         self.city_entry.configure(textvariable=self.city_text)
 
+    def make_widgets(self, weather):
+        self.img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
+        self.location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
+        self.temp_lbl['text'] = '+{:.1f}°C'.format(weather['temp']) if weather['temp'] > 0 else '{:.1f}°C'.format(
+            weather['temp'])
+        self.temp_lbl.configure(relief="groove", pady=5, padx=5)
+        self.icon['image'] = self.img
+        self.day_night_label.configure(text="День" if "d" in weather['icon'] else "Ночь")
+        self.weather_lbl['text'] = weather['weather']
+
     def search(self, city: str):
         self.city_entry.insert(END, city)
         resp, weather = None, None
@@ -106,14 +116,7 @@ class App(Tk):
             resp = self.get_weather_response(city)
             weather = self.get_weather_dict_from_response(resp)
         if weather:
-            self.img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
-            self.location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
-            self.temp_lbl['text'] = '+{:.1f}°C'.format(weather['temp']) if weather['temp'] > 0 else '{:.1f}°C'.format(
-                weather['temp'])
-            self.temp_lbl.configure(relief="groove", pady=5, padx=5)
-            self.icon['image'] = self.img
-            self.day_night_label.configure(text="День" if "d" in weather['icon'] else "Ночь")
-            self.weather_lbl['text'] = weather['weather']
+            self.make_widgets(weather)
 
         self.clear_city_text_field()
 
