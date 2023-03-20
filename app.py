@@ -4,7 +4,6 @@ import requests
 from time import strftime
 import logging
 from countries_rus import countries
-from day_night_time import DayNight
 
 
 class App(Tk):
@@ -105,7 +104,7 @@ class App(Tk):
                 weather['temp'])
             self.temp_lbl.configure(relief="groove", pady=5, padx=5)
             self.icon['image'] = self.img
-            self.day_night_label.configure(text=DayNight(weather['icon']).image)
+            self.day_night_label.configure(text="День" if "d" in weather['icon'] else "Ночь")
             self.weather_lbl['text'] = weather['weather']
 
         self.clear_city_text_field()

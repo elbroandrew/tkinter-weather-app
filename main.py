@@ -102,9 +102,7 @@ if __name__ == '__main__':
 
 #TODO:
 """
-* day/night label
 * search on ENTER key hit
 * sqlite or csv to store previous cities?
 * load default city from DB?
-* threading ?
 """
