@@ -2,9 +2,12 @@ from tkinter import *
 from tkinter import messagebox
 import requests
 from time import strftime
+import logging
 
 
 class App(Tk):
+
+    logger = logging.getLogger()
 
     def __init__(self, url: str, api_key: str):
         super().__init__()
@@ -29,6 +32,7 @@ class App(Tk):
         self.curr_date = strftime("%d-%b-%Y")
         self.string_clock = None
         self.clock_label = Label(self, font=('calibri', 14, 'bold'), bg=self._color, foreground='blue')
+        App.logger.setLevel(logging.DEBUG)
 
     def get_weather_response(self, city: str) -> requests.Response:
         try:
@@ -40,7 +44,7 @@ class App(Tk):
 
         except requests.exceptions.RequestException as e:
             messagebox.showerror('Ошибка', "Не могу найти город '{}'".format(city.capitalize()))
-            print(e)
+            App.logger.error(str(e), exc_info=True)
 
     def get_weather_dict_from_response(self, result) -> dict:
 
