@@ -34,6 +34,7 @@ class App(Tk):
         self.curr_date = strftime("%d-%b-%Y")
         self.string_clock = None
         self.clock_label = Label(self, font=('calibri', 14, 'bold'), bg=self._color, foreground='blue')
+        self.bind("<Return>", (lambda event: self.search()))
         App.logger.setLevel(logging.DEBUG)
 
     def get_weather_response(self, city: str) -> requests.Response:
