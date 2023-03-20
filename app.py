@@ -6,7 +6,6 @@ import logging
 
 
 class App(Tk):
-
     logger = logging.getLogger()
 
     def __init__(self, url: str, api_key: str):
@@ -23,7 +22,8 @@ class App(Tk):
         self.weather_lbl = Label(self, text="", font=('calibri', 18), bg=self._color)
         self.search_button = Button(self, text=self.button_text, width=12, command=self.search)
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
-        self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center", relief="groove", bg=self._color)
+        self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center",
+                                    relief="groove", bg=self._color)
         self.title("Погода")
         self.geometry('450x500')
         self.resizable(False, False)
@@ -41,14 +41,16 @@ class App(Tk):
                 raise requests.exceptions.RequestException("status code is not OK or city name was not found.")
 
             return result
-
         except requests.exceptions.RequestException as e:
-            messagebox.showerror('Ошибка', "Не могу найти город '{}'".format(city.capitalize()))
             App.logger.error(str(e), exc_info=True)
+            messagebox.showerror('Ошибка', "Не могу найти город '{}'".format(city.capitalize()))
 
     def get_weather_dict_from_response(self, result) -> dict:
 
-        if result:
+        try:
+            if not result:
+                raise requests.exceptions.InvalidJSONError("result is None")
+
             json = result.json()
 
             return dict(
@@ -58,6 +60,9 @@ class App(Tk):
                 icon=json['weather'][0]['icon'],
                 weather=json['weather'][0]['description']
             )
+
+        except requests.exceptions.InvalidJSONError as e:
+            App.logger.error(str(e), exc_info=True)
 
     def create_info_text(self) -> Text:
         info_text = Text(self,
