@@ -111,12 +111,11 @@ class App(Tk):
 
     def search(self, city: str):
         self.city_entry.insert(END, city)
-        resp, weather = None, None
         if city is not None:
             resp = self.get_weather_response(city)
             weather = self.get_weather_dict_from_response(resp)
-        if weather:
-            self.make_widgets(weather)
+            if weather:
+                self.make_widgets(weather)
 
         self.clear_city_text_field()
 
