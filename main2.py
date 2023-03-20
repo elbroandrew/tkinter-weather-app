@@ -15,4 +15,5 @@ if __name__ == '__main__':
     app = App(url, api_key)
     app.pack_all_widgets()
     app.ttime()
+    app.after_idle(app.load_city_from_csv)
     app.mainloop()

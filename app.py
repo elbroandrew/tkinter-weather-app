@@ -4,6 +4,7 @@ import requests
 from time import strftime
 import logging
 from countries_rus import countries
+import csv
 
 
 class App(Tk):
@@ -21,7 +22,8 @@ class App(Tk):
         self.temp_lbl = Label(self, text="", font=('arial', 22), bg=self._color)
         self.icon = Label(self, bg=self._color)
         self.weather_lbl = Label(self, text="", font=('calibri', 18), bg=self._color)
-        self.search_button = Button(self, text=self.button_text, width=12, command=self.search)
+        self.search_button = Button(self, text=self.button_text, width=12,
+                                    command=lambda: self.search(self.city_entry.get()))
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
         self.day_night_label = Label(self, bg=self._color, fg="steel blue", font=('calibri', 18))
         self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center",
@@ -34,16 +36,16 @@ class App(Tk):
         self.curr_date = strftime("%d-%b-%Y")
         self.string_clock = None
         self.clock_label = Label(self, font=('calibri', 14, 'bold'), bg=self._color, foreground='blue')
-        self.bind("<Return>", (lambda event: self.search()))
+        self.bind("<Return>", (lambda event: self.search(self.city_text.get())))
         App.logger.setLevel(logging.DEBUG)
 
     def get_weather_response(self, city: str) -> requests.Response:
         try:
-            result: requests.Response = requests.get(self.url.format(city, self.api_key))
-            if not result.status_code == 200:
+            resp: requests.Response = requests.get(self.url.format(city, self.api_key))
+            if not resp.status_code == 200:
                 raise requests.exceptions.RequestException("status code is not OK or city name was not found.")
 
-            return result
+            return resp
         except requests.exceptions.RequestException as e:
             App.logger.error(str(e), exc_info=True)
             messagebox.showerror('Ошибка', "Не могу найти город '{}'".format(city.capitalize()))
@@ -94,10 +96,15 @@ class App(Tk):
         self.temp_lbl.pack()
         self.weather_lbl.pack()
 
-    def search(self):
-        city: str = self.city_text.get()
-        res = self.get_weather_response(city)
-        weather = self.get_weather_dict_from_response(res)
+    def get_city(self):
+        self.city_entry.configure(textvariable=self.city_text)
+
+    def search(self, city: str):
+        self.city_entry.insert(END, city)
+        resp, weather = None, None
+        if city is not None:
+            resp = self.get_weather_response(city)
+            weather = self.get_weather_dict_from_response(resp)
         if weather:
             self.img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
             self.location_lbl['text'] = '{}, {}'.format(weather['city'], weather['country'])
@@ -112,6 +119,12 @@ class App(Tk):
 
     def clear_city_text_field(self):
         self.city_entry.delete(0, END)
+
+    def load_city_from_csv(self):
+        with open("db.txt") as csv_file:
+            csv_reader = csv.reader(csv_file)
+            for row in csv_reader:
+                self.search(row[0])  # pass first city name from db
 
     def ttime(self):
         self.string_clock = strftime('%H:%M:%S')
