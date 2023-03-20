@@ -96,8 +96,10 @@ class App(Tk):
         self.temp_lbl.pack()
         self.weather_lbl.pack()
 
-    def get_city(self):
-        self.city_entry.configure(textvariable=self.city_text)
+    def dump_city_to_csv_db(self, city_name: str):
+        with open("db.txt", 'w') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow([city_name, ])
 
     def make_widgets(self, weather):
         self.img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
@@ -110,11 +112,12 @@ class App(Tk):
         self.weather_lbl['text'] = weather['weather']
 
     def search(self, city: str):
-        self.city_entry.insert(END, city)
         if city is not None:
             resp = self.get_weather_response(city)
             weather = self.get_weather_dict_from_response(resp)
             if weather:
+                self.city_entry.insert(END, city)
+                self.dump_city_to_csv_db(city)
                 self.make_widgets(weather)
 
         self.clear_city_text_field()
@@ -126,7 +129,8 @@ class App(Tk):
         with open("db.txt") as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
-                self.search(row[0])  # pass first city name from db
+                if len(row) > 0:
+                    self.search(row[0])
 
     def ttime(self):
         self.string_clock = strftime('%H:%M:%S')
