@@ -3,6 +3,7 @@ from tkinter import messagebox
 import requests
 from time import strftime
 import logging
+from countries_rus import countries
 
 
 class App(Tk):
@@ -55,7 +56,7 @@ class App(Tk):
 
             return dict(
                 city=json['name'],
-                country=json['sys']['country'],
+                country=countries[json['sys']['country']],
                 temp=json['main']['temp'] - self.kelvin,
                 icon=json['weather'][0]['icon'],
                 weather=json['weather'][0]['description']
