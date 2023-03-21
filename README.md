@@ -1,3 +1,9 @@
 ## Tkinter weather app
+new:
 
-![alt text](o.png)
+![alt_text](new.png)
+
+old:
+
+![alt text](old.png)
+
