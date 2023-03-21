@@ -106,10 +106,9 @@ class App(Tk):
         self.city_entry.insert(0, value)
         self.om_default.set("")
 
-    def dump_city_to_csv_db(self, city_name: str):
+    def dump_city_to_csv_db(self):
         with open("db.txt", 'w') as csv_file:
-            writer = csv.writer(csv_file)
-            writer.writerow([city_name.strip().lower(), ])
+            csv.writer(csv_file, delimiter='\n').writerow(self.cities)
 
     def make_widgets(self, weather):
         self.img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
@@ -131,8 +130,6 @@ class App(Tk):
                     self.cities.insert(0, city.lower())
                     if len(self.cities) > 3:
                         self.cities = self.cities[:3]
-                print(self.cities)
-                #self.dump_city_to_csv_db(city)
                 self.make_widgets(weather)
 
         self.clear_city_text_field()
@@ -144,6 +141,7 @@ class App(Tk):
         return [x[0] for idx, x in enumerate(cities_list) if len(x) > 0 and idx < 3]
 
     def load_city_from_csv(self):
+
         with open("db.txt") as csv_file:
             csv_reader = csv.reader(csv_file)
             cities = []
@@ -151,11 +149,17 @@ class App(Tk):
                 cities.append(row)
             self.cities = self.create_new_cities_list(cities)
             self.search(self.cities[0])
-            print(self.cities)
 
     def ttime(self):
         self.string_clock = strftime('%H:%M:%S')
         self.clock_label.config(text="{}, {}".format(self.curr_date, self.string_clock))
         self.clock_label.after(1000, self.ttime)
 
+    def __enter__(self):
+        self.load_city_from_csv()
+        self.pack_all_widgets()
+        self.ttime()
+        return self
 
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.dump_city_to_csv_db()
