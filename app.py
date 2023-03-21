@@ -27,6 +27,9 @@ class App(Tk):
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
         self.day_night_label = Label(self, bg=self._color, fg="steel blue", font=('calibri', 18))
         self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center", bg=self._color)
+        self.om_default = StringVar()
+        self.option_menu = OptionMenu(self, self.om_default, "Moscow", "tomsk", "Хабаровск",
+                                      command=self.option_menu_reset)
         self.title("Погода")
         self.geometry('450x560')
         self.resizable(False, False)
@@ -87,6 +90,7 @@ class App(Tk):
         """
         self.create_info_text().pack()
         self.city_entry.pack(pady=self.pady, ipady=5)
+        self.option_menu.place(x=390, y=50)
         self.search_button.pack(pady=self.pady)
         self.location_lbl.pack()
         self.clock_label.pack()
@@ -94,6 +98,10 @@ class App(Tk):
         self.icon.pack()
         self.temp_lbl.pack()
         self.weather_lbl.pack()
+
+    def option_menu_reset(self, value):
+        self.city_entry.insert(0, value)
+        self.om_default.set("")
 
     def dump_city_to_csv_db(self, city_name: str):
         with open("db.txt", 'w') as csv_file:
