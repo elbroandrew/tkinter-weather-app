@@ -109,7 +109,7 @@ class App(Tk):
     def dump_city_to_csv_db(self, city_name: str):
         with open("db.txt", 'w') as csv_file:
             writer = csv.writer(csv_file)
-            writer.writerow([city_name.strip(), ])
+            writer.writerow([city_name.strip().lower(), ])
 
     def make_widgets(self, weather):
         self.img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
@@ -127,8 +127,12 @@ class App(Tk):
             weather = self.get_weather_dict_from_response(resp)
             if weather:
                 self.city_entry.insert(END, city)
-                #self.check_cities(city)
-                self.dump_city_to_csv_db(city)
+                if not city.lower() in self.cities:
+                    self.cities.insert(0, city.lower())
+                    if len(self.cities) > 3:
+                        self.cities = self.cities[:3]
+                print(self.cities)
+                #self.dump_city_to_csv_db(city)
                 self.make_widgets(weather)
 
         self.clear_city_text_field()
@@ -153,3 +157,5 @@ class App(Tk):
         self.string_clock = strftime('%H:%M:%S')
         self.clock_label.config(text="{}, {}".format(self.curr_date, self.string_clock))
         self.clock_label.after(1000, self.ttime)
+
+
