@@ -15,6 +15,7 @@ class App(Tk):
         self._color = "#e3dcde"
         self.url = url
         self.api_key = api_key
+        self.cities = []
         self.pady = (10, 10)
         self.city_text = StringVar()
         self.img = None
@@ -26,7 +27,8 @@ class App(Tk):
                                     command=lambda: self.search(self.city_entry.get()))
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
         self.day_night_label = Label(self, bg=self._color, fg="steel blue", font=('calibri', 18))
-        self.location_lbl = Message(self, text='Город', font=('consolas', 30), width=400, justify="center", bg=self._color)
+        self.location_lbl = Message(self, text='Город', font=('consolas', 30),
+                                    width=400, justify="center", bg=self._color)
         self.om_default = StringVar()
         self.option_menu = OptionMenu(self, self.om_default, "Moscow", "tomsk", "Хабаровск",
                                       command=self.option_menu_reset)
@@ -133,12 +135,17 @@ class App(Tk):
     def clear_city_text_field(self):
         self.city_entry.delete(0, END)
 
+    def create_new_cities_list(self, cities_list: list) -> list:
+        return [x[0] for idx, x in enumerate(cities_list) if len(x) > 0 and idx < 3]
+
+
     def load_city_from_csv(self):
         with open("db.txt") as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
-                if len(row) > 0:
-                    self.search(row[0])
+                self.cities.append(row)
+                self.search(self.cities[0][0])
+            print(self.cities)
 
     def ttime(self):
         self.string_clock = strftime('%H:%M:%S')
