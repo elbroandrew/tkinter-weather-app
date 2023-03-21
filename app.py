@@ -100,6 +100,7 @@ class App(Tk):
         self.weather_lbl.pack()
 
     def option_menu_reset(self, value):
+        self.city_entry.delete(0, END)
         self.city_entry.insert(0, value)
         self.om_default.set("")
 
