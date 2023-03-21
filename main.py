@@ -12,8 +12,6 @@ url = "http://api.openweathermap.org/data/2.5/weather?q={}&lang=ru&appid={}"
 
 
 if __name__ == '__main__':
-    app = App(url, api_key)
-    app.pack_all_widgets()
-    app.ttime()
-    app.after_idle(app.load_city_from_csv)
-    app.mainloop()
+    with App(url, api_key) as app:
+        app.mainloop()
+
