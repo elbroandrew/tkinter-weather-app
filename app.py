@@ -24,7 +24,7 @@ class App(Tk):
         self.icon = Label(self, bg=self._color)
         self.weather_lbl = Label(self, text="", font=('calibri', 18), bg=self._color)
         self.search_button = Button(self, text=self.button_text, width=12,
-                                    command=lambda: self.search(self.city_entry.get()))
+                                    command=lambda: self.search(self.city_entry.get().strip()))
         self.city_entry = Entry(self, textvariable=self.city_text, width=30, font=("calibri", 14), justify="center")
         self.day_night_label = Label(self, bg=self._color, fg="steel blue", font=('calibri', 18))
         self.location_lbl = Message(self, text='Город', font=('consolas', 30),
@@ -40,7 +40,7 @@ class App(Tk):
         self.curr_date = strftime("%d-%b-%Y")
         self.string_clock = None
         self.clock_label = Label(self, font=('calibri', 14, 'bold'), bg=self._color, foreground='blue')
-        self.bind("<Return>", (lambda event: self.search(self.city_text.get())))
+        self.bind("<Return>", (lambda event: self.search(self.city_text.get().strip())))
         App.logger.setLevel(logging.DEBUG)
 
     def get_weather_response(self, city: str) -> requests.Response:
@@ -109,7 +109,7 @@ class App(Tk):
     def dump_city_to_csv_db(self, city_name: str):
         with open("db.txt", 'w') as csv_file:
             writer = csv.writer(csv_file)
-            writer.writerow([city_name, ])
+            writer.writerow([city_name.strip(), ])
 
     def make_widgets(self, weather):
         self.img = PhotoImage(file=r'img/{}@2x.png'.format(weather['icon']))
@@ -127,6 +127,7 @@ class App(Tk):
             weather = self.get_weather_dict_from_response(resp)
             if weather:
                 self.city_entry.insert(END, city)
+                #self.check_cities(city)
                 self.dump_city_to_csv_db(city)
                 self.make_widgets(weather)
 
@@ -138,13 +139,14 @@ class App(Tk):
     def create_new_cities_list(self, cities_list: list) -> list:
         return [x[0] for idx, x in enumerate(cities_list) if len(x) > 0 and idx < 3]
 
-
     def load_city_from_csv(self):
         with open("db.txt") as csv_file:
             csv_reader = csv.reader(csv_file)
+            cities = []
             for row in csv_reader:
-                self.cities.append(row)
-                self.search(self.cities[0][0])
+                cities.append(row)
+            self.cities = self.create_new_cities_list(cities)
+            self.search(self.cities[0])
             print(self.cities)
 
     def ttime(self):
