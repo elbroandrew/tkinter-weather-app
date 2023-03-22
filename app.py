@@ -15,7 +15,7 @@ class App(Tk):
         self._color = "#e3dcde"
         self.url = url
         self.api_key = api_key
-        self.cities = []
+        self.cities = ["moscow", "tomsk", "хабаровск"]
         self.pady = (10, 10)
         self.city_text = StringVar()
         self.img = None
@@ -30,7 +30,7 @@ class App(Tk):
         self.location_lbl = Message(self, text='Город', font=('consolas', 30),
                                     width=400, justify="center", bg=self._color)
         self.om_default = StringVar()
-        self.option_menu = OptionMenu(self, self.om_default, "Moscow", "tomsk", "Хабаровск",
+        self.option_menu = OptionMenu(self, self.om_default, *self.cities,
                                       command=self.option_menu_reset)
         self.title("Погода")
         self.geometry('450x560')
@@ -106,6 +106,12 @@ class App(Tk):
         self.city_entry.insert(0, value)
         self.om_default.set("")
 
+    def update_option_menu(self):
+        menu = self.option_menu["menu"]
+        menu.delete(0, END)
+        for string in self.cities:
+            menu.add_command(label=string, command=lambda value=string: self.om_default.set(value))
+
     def dump_city_to_csv_db(self):
         with open("db.txt", 'w') as csv_file:
             csv.writer(csv_file, delimiter='\n').writerow(self.cities)
@@ -130,6 +136,7 @@ class App(Tk):
                     self.cities.insert(0, city.lower())
                     if len(self.cities) > 3:
                         self.cities = self.cities[:3]
+                    self.update_option_menu()
                 self.make_widgets(weather)
 
         self.clear_city_text_field()
