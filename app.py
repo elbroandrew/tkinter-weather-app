@@ -15,7 +15,7 @@ class App(Tk):
         self._color = "#e3dcde"
         self.url = url
         self.api_key = api_key
-        self.cities = ["moscow", "tomsk", "хабаровск"]
+        self.cities = self.load_city_from_csv()  # ["moscow", "tomsk", "хабаровск"]
         self.pady = (10, 10)
         self.city_text = StringVar()
         self.img = None
@@ -144,18 +144,20 @@ class App(Tk):
     def clear_city_text_field(self):
         self.city_entry.delete(0, END)
 
-    def create_new_cities_list(self, cities_list: list) -> list:
+    @classmethod
+    def create_new_cities_list(cls, cities_list: list) -> list:
         return [x[0] for idx, x in enumerate(cities_list) if len(x) > 0 and idx < 3]
 
-    def load_city_from_csv(self):
+    @classmethod
+    def load_city_from_csv(cls):
 
         with open("db.txt") as csv_file:
             csv_reader = csv.reader(csv_file)
             cities = []
             for row in csv_reader:
                 cities.append(row)
-            self.cities = self.create_new_cities_list(cities)
-            self.search(self.cities[0])
+
+            return cls.create_new_cities_list(cities)
 
     def ttime(self):
         self.string_clock = strftime('%H:%M:%S')
@@ -163,7 +165,7 @@ class App(Tk):
         self.clock_label.after(1000, self.ttime)
 
     def __enter__(self):
-        self.load_city_from_csv()
+        self.search(self.cities[0])
         self.pack_all_widgets()
         self.ttime()
         return self
