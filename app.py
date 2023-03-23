@@ -113,7 +113,7 @@ class App(Tk):
             menu.add_command(label=string, command=lambda value=string: self.om_default.set(value))
 
     def dump_city_to_csv_db(self):
-        with open("db.txt", 'w') as csv_file:
+        with open("db.txt", 'w', encoding='utf-8-sig') as csv_file:
             csv.writer(csv_file, delimiter='\n').writerow(self.cities)
 
     def make_widgets(self, weather):
